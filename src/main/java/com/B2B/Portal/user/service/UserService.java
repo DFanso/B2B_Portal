@@ -5,6 +5,7 @@ import com.B2B.Portal.user.exception.UserAlreadyExistsException;
 import com.B2B.Portal.user.exception.UserNotFoundException;
 import com.B2B.Portal.user.model.User;
 import com.B2B.Portal.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,22 +49,12 @@ public class UserService {
 
 
 
-    public User updateUser(Long id, User userDetails) {
+    public User updateUser(Long id, @Valid UserDTO userDetailsDTO) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
-
-        if (userDetails.getName() != null && !userDetails.getName().isEmpty()) {
-            existingUser.setName(userDetails.getName());
-        }
-        if (userDetails.getEmail() != null && !userDetails.getEmail().isEmpty()) {
-            existingUser.setEmail(userDetails.getEmail());
-        }
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            existingUser.setPassword(userDetails.getPassword());
-        }
-        if (userDetails.getType() != null && !userDetails.getType().isEmpty()) {
-            existingUser.setType(userDetails.getType());
-        }
+        userDetailsDTO.setUserId(id);
+        // Update existingUser properties from userDetailsDTO
+        modelMapper.map(userDetailsDTO, existingUser);
 
         return userRepository.save(existingUser);
     }
