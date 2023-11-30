@@ -38,13 +38,6 @@ public class UserController {
         return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
-        UserDTO user = userService.getUserById(userId);
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok(userDTO);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         User updatedUser = userService.updateUser(id, userDTO);
