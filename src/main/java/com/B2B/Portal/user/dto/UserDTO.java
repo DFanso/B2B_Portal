@@ -11,6 +11,7 @@ public class UserDTO {
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
+    @Pattern(regexp = "^(.+)@(\\S+)$", message = "Email does not match the required format")
     private String email;
 
     @NotBlank(message = "Password is mandatory")

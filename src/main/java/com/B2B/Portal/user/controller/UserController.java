@@ -32,16 +32,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
-        // Map DTO to entity
         User userEntity = modelMapper.map(userDTO, User.class);
-
-        // Create user in the service layer and get the persisted user entity
         User createdUser = userService.createUser(userEntity);
-
-        // Map the persisted entity back to DTO
         UserDTO createdUserDTO = modelMapper.map(createdUser, UserDTO.class);
-
-        // Return the created user DTO with status 201 Created
         return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
     }
 
