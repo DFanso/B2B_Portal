@@ -1,7 +1,8 @@
-package com.B2B.Portal.controller;
+package com.B2B.Portal.product.controller;
 
-import com.B2B.Portal.model.User;
-import com.B2B.Portal.service.UserService;
+import com.B2B.Portal.product.model.User;
+import com.B2B.Portal.product.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class ProductController {
 
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public ProductController(UserService userService) {
         this.userService = userService;
     }
 
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody User userDetails) {
         return ResponseEntity.ok(userService.updateUser(userId, userDetails));
     }
 

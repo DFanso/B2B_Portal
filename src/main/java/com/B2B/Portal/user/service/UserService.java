@@ -1,21 +1,24 @@
-package com.B2B.Portal.service;
+package com.B2B.Portal.user.service;
 
-import com.B2B.Portal.model.User;
-import com.B2B.Portal.repository.UserRepository;
+import com.B2B.Portal.user.dto.UserDTO;
+import com.B2B.Portal.user.model.User;
+import com.B2B.Portal.user.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper ;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<User> getAllUsers() {
@@ -23,11 +26,13 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        // Add any additional logic required before saving the user
         return userRepository.save(user);
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     public User updateUser(Long id, User userDetails) {
