@@ -1,7 +1,11 @@
-package com.B2B.Portal.model;
+package com.B2B.Portal.user.model;
+
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -11,8 +15,11 @@ public class User {
     private Long userId;
 
     private String name;
+
     private String password;
+
     private String email;
+
     private String type;
 
     public Long getUserId() {

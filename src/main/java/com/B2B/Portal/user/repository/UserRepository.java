@@ -1,6 +1,6 @@
-package com.B2B.Portal.repository;
+package com.B2B.Portal.user.repository;
 
-import com.B2B.Portal.model.User;
+import com.B2B.Portal.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
