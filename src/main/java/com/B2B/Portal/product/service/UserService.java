@@ -1,7 +1,7 @@
-package com.B2B.Portal.service;
+package com.B2B.Portal.product.service;
 
-import com.B2B.Portal.model.User;
-import com.B2B.Portal.repository.UserRepository;
+import com.B2B.Portal.product.model.User;
+import com.B2B.Portal.product.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

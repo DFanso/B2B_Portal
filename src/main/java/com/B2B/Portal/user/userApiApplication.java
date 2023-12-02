@@ -1,13 +1,13 @@
-package com.B2B.Portal;
+package com.B2B.Portal.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class B2BPortalApiApplication {
+public class userApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(B2BPortalApiApplication.class, args);
+		SpringApplication.run(userApiApplication.class, args);
 	}
 
 }
