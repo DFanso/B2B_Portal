@@ -8,20 +8,6 @@
       <jdbc-url>jdbc:postgresql://kiouni.db.elephantsql.com:5432/esiuvrrj</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="f68588da-c91a-4e58-8830-40e43306b38b">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="postgres@localhost [2]" uuid="e00ec720-bcaa-4b56-befd-54829f6e3038">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:53934/postgres</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="mydatabase@localhost" uuid="0d3e22f5-84d9-45e7-be39-c76a6e970e7a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>

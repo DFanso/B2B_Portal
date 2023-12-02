@@ -1,50 +1,65 @@
 package com.B2B.Portal.product.controller;
 
-import com.B2B.Portal.product.model.User;
-import com.B2B.Portal.product.service.UserService;
-import jakarta.validation.Valid;
+import com.B2B.Portal.product.dto.ProductDTO;
+import com.B2B.Portal.product.model.Product;
+import com.B2B.Portal.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
-    private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
-    public ProductController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO product = productService.createProduct(productDTO);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody User userDetails) {
-        return ResponseEntity.ok(userService.updateUser(userId, userDetails));
+    @GetMapping("/{supplierId}")
+    public ResponseEntity<List<ProductDTO>> getProductsBySupplierId(@PathVariable Long supplierId) {
+        List<ProductDTO> products = productService.getProductsBySupplierId(supplierId);
+        return ResponseEntity.ok(products);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long productId) {
+        ProductDTO product = productService.getProductById(productId);
+        return ResponseEntity.ok(product);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO) {
+        ProductDTO updatedProduct = productService.updateProduct(productId, productDTO);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @PatchMapping("/{productId}/status")
+    public ResponseEntity<ProductDTO> updateProductStatus(@PathVariable Long productId, @RequestBody String status) {
+        ProductDTO updatedProduct = productService.updateProductStatus(productId, status);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
 }
