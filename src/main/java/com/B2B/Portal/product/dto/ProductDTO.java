@@ -15,6 +15,7 @@ public class ProductDTO {
     private Double price;
 
     @NotBlank(message = "Product status is mandatory")
+    @Pattern(regexp = "^(PENDING|ACTIVE|REJECT)$", message = "Status should be either PENDING, ACTIVE, or REJECT")
     private String status;
 
     @NotNull(message = "Supplier ID is mandatory")

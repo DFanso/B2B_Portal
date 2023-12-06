@@ -66,4 +66,10 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+    public boolean isValidSupplier(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        return "SUPPLIER".equals(user.getType());
+    }
 }

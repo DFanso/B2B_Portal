@@ -50,4 +50,11 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/validate-supplier")
+    public ResponseEntity<?> isValidSupplier(@RequestParam String userId) {
+        Long ID = Long.parseLong(userId);
+        boolean isValid = userService.isValidSupplier(ID);
+        return ResponseEntity.ok(isValid);
+    }
 }
