@@ -14,6 +14,14 @@ spring:
 server:
   port: 8081
 
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "order"
+server:
+  port: 8082
 
 
 

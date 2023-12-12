@@ -45,17 +45,20 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{supplierId}")
+    // Get products by supplier ID
+    @GetMapping(value = "/products/supplier/{supplierId}")
     public ResponseEntity<List<ProductDTO>> getProductsBySupplierId(@PathVariable Long supplierId) {
         List<ProductDTO> products = productService.getProductsBySupplierId(supplierId);
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{productId}")
+    // Get product by product ID
+    @GetMapping(value="/products/{productId}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long productId) {
         ProductDTO product = productService.getProductById(productId);
         return ResponseEntity.ok(product);
     }
+
 
     @PutMapping("/{productId}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO) {
