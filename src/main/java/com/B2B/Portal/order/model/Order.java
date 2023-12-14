@@ -1,35 +1,33 @@
-package com.B2B.Portal.order.dto;
+package com.B2B.Portal.order.model;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDTO {
-
+@Entity
+@Table(name = "orders")
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @NotNull(message = "Customer ID is mandatory")
+    @Column(nullable = false)
     private Long customerId;
 
-    @NotEmpty(message = "Order items cannot be empty")
-    @Valid
-    private List<OrderItemDTO> items;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
+    private List<OrderItem> items;
 
-    @NotNull(message = "Order date is mandatory")
+    @Column(nullable = false)
     private LocalDateTime orderDate;
 
-    @NotBlank(message = "Delivery address is mandatory")
+    @Column(nullable = false)
     private String deliveryAddress;
 
-    private LocalDateTime deliveryDate; // Assuming this can be null
+    private LocalDateTime deliveryDate;
 
-    @NotBlank(message = "Order status is mandatory")
+    @Column(nullable = false)
     private String status;
-
-    public OrderDTO() {
-    }
-
 
     public Long getOrderId() {
         return orderId;
@@ -47,11 +45,11 @@ public class OrderDTO {
         this.customerId = customerId;
     }
 
-    public List<OrderItemDTO> getItems() {
+    public List<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItemDTO> items) {
+    public void setItems(List<OrderItem> items) {
         this.items = items;
     }
 
@@ -89,28 +87,54 @@ public class OrderDTO {
 
 
 
+    public Order() {
+    }
+
+    // Inner class for order items
+    @Entity
+    @Table(name = "order_items")
+    public static class OrderItem {
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "orderId", nullable = false)
+        private Order order;
 
 
-    public static class OrderItemDTO {
 
-        @NotNull(message = "Product ID is mandatory")
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @Column(nullable = false)
         private Long productId;
+
+        @Column(nullable = false)
+        private Integer quantity;
+
+        @Column(nullable = false)
+        private Double price;
+
+        @Column(nullable = false)
+        private Long supplierId;
+
+
+        public Order getOrder() {
+            return order;
+        }
+
+        public void setOrder(Order order) {
+            this.order = order;
+        }
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
 
         public Long getProductId() {
             return productId;
-        }
-        @NotNull(message = "Quantity is mandatory")
-        @Min(value = 1, message = "Quantity must be at least 1")
-        private Integer quantity;
-
-        @NotNull(message = "Price is mandatory")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
-        private Double price;
-
-        @NotNull(message = "Supplier ID is mandatory")
-        private Long supplierId;
-
-        public OrderItemDTO() {
         }
 
         public void setProductId(Long productId) {
