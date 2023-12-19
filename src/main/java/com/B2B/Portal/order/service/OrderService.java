@@ -2,15 +2,24 @@ package com.B2B.Portal.order.service;
 
 import com.B2B.Portal.order.dto.OrderDTO;
 import com.B2B.Portal.order.exception.OrderNotFoundException;
+import com.B2B.Portal.order.exception.UserNotFoundException;
 import com.B2B.Portal.order.model.Order;
 import com.B2B.Portal.order.repository.OrderRepository;
+import com.B2B.Portal.product.exception.InvalidSupplierException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,9 +28,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
 
+    private final RestTemplate restTemplate;
+
     @Autowired
-    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper) {
+    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, RestTemplateBuilder restTemplateBuilder) {
         this.orderRepository = orderRepository;
+        this.restTemplate = restTemplateBuilder.build();;
         this.modelMapper = modelMapper;
         configureModelMapper();
     }
@@ -30,9 +42,44 @@ public class OrderService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
+    private boolean validateUserId(Long userId, String userType) {
+        String validationUrl = "http://localhost:8080/api/v1/users/" + userId;
+        try {
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                    validationUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<Map<String, Object>>() {}
+            );
+            Map<String, Object> userMap = response.getBody();
+
+            if (userMap != null) {
+                String type = (String) userMap.get("type");
+                return userType.equalsIgnoreCase(type);
+            }
+            return false;
+        } catch (HttpClientErrorException e) {
+            // Log error and/or handle it according to your application's needs
+            return false;
+        }
+    }
+
+
 
     public OrderDTO createOrder(OrderDTO orderDTO) {
+
+        // Validate customer ID
+        if (!validateUserId(orderDTO.getCustomerId(), "CUSTOMER")) {
+            throw new UserNotFoundException("Invalid customer ID");
+        }
+
         Order order = modelMapper.map(orderDTO, Order.class);
+
+        for (OrderDTO.OrderItemDTO item : orderDTO.getItems()) {
+            if (!validateUserId(item.getSupplierId(), "SUPPLIER")) {
+                throw new InvalidSupplierException("No valid supplier found with this product ID "+ item.getProductId());
+            }
+        }
 
         // Set the order reference on each order item
         if (order.getItems() != null) {

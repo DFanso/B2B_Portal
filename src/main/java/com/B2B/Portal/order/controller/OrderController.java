@@ -1,7 +1,9 @@
 package com.B2B.Portal.order.controller;
 
 import com.B2B.Portal.order.dto.OrderDTO;
+import com.B2B.Portal.order.exception.UserNotFoundException;
 import com.B2B.Portal.order.service.OrderService;
+import com.B2B.Portal.product.exception.InvalidSupplierException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,17 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-        OrderDTO newOrder = orderService.createOrder(orderDTO);
-        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+        try {
+            orderDTO.setStatus("PENDING");
+            OrderDTO newOrder = orderService.createOrder(orderDTO);
+            return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
+        } catch (UserNotFoundException | InvalidSupplierException ex) {
+
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An error occurred while creating the order.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{orderId}")
