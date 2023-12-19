@@ -1,5 +1,6 @@
 package com.B2B.Portal.product.model;
 
+import com.B2B.Portal.product.configuration.StringArrayConverter;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,9 +26,11 @@ public class Product {
     @Column(nullable = false)
     private Long supplierId;
 
+
     // Assuming images are stored as a comma-separated string of URLs
-    @Column(nullable = true, length = 1000)
-    private String images;
+    @Column(name = "images", nullable = true)
+    @Convert(converter = StringArrayConverter.class)
+    private String[] images;
 
     // Constructors, Getters, and Setters
     public Product() {
@@ -81,12 +84,14 @@ public class Product {
         this.supplierId = supplierId;
     }
 
-    public String getImages() {
+    public String[] getImages() {
         return images;
     }
 
-    public void setImages(String images) {
+    public void setImages(String[] images) {
         this.images = images;
     }
+
+
 
 }
