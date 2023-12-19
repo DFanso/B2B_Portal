@@ -1,6 +1,8 @@
 package com.B2B.Portal.user.controller;
 
+import com.B2B.Portal.product.dto.ProductDTO;
 import com.B2B.Portal.user.dto.UserDTO;
+import com.B2B.Portal.user.dto.UserResponseDTO;
 import com.B2B.Portal.user.model.User;
 import com.B2B.Portal.user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -25,9 +27,22 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDTO> loginUser(@RequestParam String email, @RequestParam String password) {
+        UserResponseDTO userResponseDTO = userService.authenticateUser(email, password);
+        return ResponseEntity.ok(userResponseDTO);
+    }
+
+    @GetMapping(value="/{id}")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        UserResponseDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<UserResponseDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping
