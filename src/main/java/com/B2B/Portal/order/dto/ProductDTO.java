@@ -1,40 +1,35 @@
-package com.B2B.Portal.product.model;
+package com.B2B.Portal.order.dto;
 
-import com.B2B.Portal.product.configuration.StringArrayConverter;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
-@Entity
-@Table(name = "products")
-public class Product {
+public class ProductDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-
-    @Column(nullable = false)
+    @NotBlank(message = "Product name is mandatory")
     private String name;
 
-    @Column(nullable = false, length = 500)
+    @NotBlank(message = "Product description is mandatory")
     private String description;
 
-    @Column(nullable = false)
+    @NotNull(message = "Price is mandatory")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private Double price;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Product status is mandatory")
+    @Pattern(regexp = "^(PENDING|CONFIRMED|SHIPPED|DELIVERED|CANCELLED)$", message = "Status should be either PENDING, CONFIRMED, SHIPPED, DELIVERED or CANCELLED")
     private String status;
 
-    @Column(nullable = false)
+    @NotNull(message = "Supplier ID is mandatory")
     private Long supplierId;
 
-
-    // Assuming images are stored as a comma-separated string of URLs
-    @Column(name = "images", nullable = true)
-    @Convert(converter = StringArrayConverter.class)
+    @NotNull(message = "Product images are mandatory")
+    @Size(min = 1, message = "At least one image URL must be provided")
     private String[] images;
 
-    // Constructors, Getters, and Setters
-    public Product() {
+    // Default constructor
+    public ProductDTO() {
     }
+
+    private Long productId;
 
     public Long getProductId() {
         return productId;
@@ -91,7 +86,5 @@ public class Product {
     public void setImages(String[] images) {
         this.images = images;
     }
-
-
 
 }
