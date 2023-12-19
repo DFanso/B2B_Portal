@@ -22,6 +22,3 @@ spring:
       on-profile: "order"
 server:
   port: 8082
-
-
-
