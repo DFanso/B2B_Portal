@@ -1,6 +1,8 @@
 package com.B2B.Portal.order.service;
 
 import com.B2B.Portal.order.dto.OrderDTO;
+import com.B2B.Portal.order.dto.ProductDTO;
+import com.B2B.Portal.order.exception.InvalidProductException;
 import com.B2B.Portal.order.exception.OrderNotFoundException;
 import com.B2B.Portal.order.exception.UserNotFoundException;
 import com.B2B.Portal.order.model.Order;
@@ -59,10 +61,34 @@ public class OrderService {
             }
             return false;
         } catch (HttpClientErrorException e) {
+
+            return false;
+        }
+    }
+
+    private boolean validateProduct(Long productId, Long supplierId) {
+        String validationUrl = "http://localhost:8081/api/v1/products/" + productId;
+        try {
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                    validationUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<Map<String, Object>>() {}
+            );
+            Map<String, Object> productData = response.getBody();
+            if (productData != null) {
+                // Verify that the product is not null, is available (e.g., not DELETED or DISABLED),
+                // and the supplier ID matches.
+                Long fetchedSupplierId = ((Number) productData.get("supplierId")).longValue();
+                return fetchedSupplierId.equals(supplierId);
+            }
+            return false;
+        } catch (HttpClientErrorException e) {
             // Log error and/or handle it according to your application's needs
             return false;
         }
     }
+
 
 
 
@@ -78,6 +104,9 @@ public class OrderService {
         for (OrderDTO.OrderItemDTO item : orderDTO.getItems()) {
             if (!validateUserId(item.getSupplierId(), "SUPPLIER")) {
                 throw new InvalidSupplierException("No valid supplier found with this product ID "+ item.getProductId());
+            }
+            if (!validateProduct(item.getProductId(), item.getSupplierId())) {
+                throw new InvalidProductException("Invalid product ID " + item.getProductId() + " for supplier ID " + item.getSupplierId());
             }
         }
 

@@ -1,6 +1,7 @@
 package com.B2B.Portal.order.controller;
 
 import com.B2B.Portal.order.dto.OrderDTO;
+import com.B2B.Portal.order.exception.InvalidProductException;
 import com.B2B.Portal.order.exception.UserNotFoundException;
 import com.B2B.Portal.order.service.OrderService;
 import com.B2B.Portal.product.exception.InvalidSupplierException;
@@ -28,7 +29,7 @@ public class OrderController {
             orderDTO.setStatus("PENDING");
             OrderDTO newOrder = orderService.createOrder(orderDTO);
             return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
-        } catch (UserNotFoundException | InvalidSupplierException ex) {
+        } catch (UserNotFoundException | InvalidSupplierException | InvalidProductException ex) {
 
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
