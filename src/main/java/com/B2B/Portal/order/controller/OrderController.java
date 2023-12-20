@@ -37,6 +37,12 @@ public class OrderController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        List<OrderDTO> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long orderId) {
         OrderDTO order = orderService.getOrderById(orderId);
@@ -66,6 +72,4 @@ public class OrderController {
         List<OrderDTO> orders = orderService.getOrdersBySupplierId(supplierId);
         return ResponseEntity.ok(orders);
     }
-
-    // Any additional endpoints as per your API spec can be added here
 }
