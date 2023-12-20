@@ -35,7 +35,7 @@ public class OrderService {
     @Autowired
     public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, RestTemplateBuilder restTemplateBuilder) {
         this.orderRepository = orderRepository;
-        this.restTemplate = restTemplateBuilder.build();;
+        this.restTemplate = restTemplateBuilder.build();
         this.modelMapper = modelMapper;
         configureModelMapper();
     }
@@ -158,4 +158,12 @@ public class OrderService {
                 .map(order -> modelMapper.map(order, OrderDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public List<OrderDTO> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
