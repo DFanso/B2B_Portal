@@ -11,10 +11,9 @@ import java.util.Map;
 public class OrderItemProcessor implements ItemProcessor<OrderDTO, Map<Long, List<OrderDTO.OrderItemDTO>>> {
 
     @Override
-    public Map<Long, List<OrderDTO.OrderItemDTO>> process(OrderDTO order) throws Exception {
+    public Map<Long, List<OrderDTO.OrderItemDTO>> process(OrderDTO order) {
         LocalDate today = LocalDate.now();
 
-        // Skip orders that are not for today
         if (!order.getOrderDate().toLocalDate().equals(today)) {
             return null;
         }

@@ -29,37 +29,11 @@ public class BatchConfig {
         this.transactionManager = transactionManager;
     }
 
-//    @Scheduled(cron = "0 * * * * *") // Run every minute
-//    public void runBatchJob() {
-//        try {
-//            // Create JobParameters with a unique identifier (e.g., timestamp)
-//            JobParameters jobParameters = new JobParametersBuilder()
-//                    .addLong("time", System.currentTimeMillis())
-//                    .toJobParameters();
-//
-//            // Launch the job with the provided JobParameters
-//            JobExecution jobExecution = jobLauncher.run(orderStep, jobParameters);
-//
-//            // Handle job execution status if needed
-//            if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-//                // Job completed successfully
-//            } else {
-//                // Handle job failure or other status
-//            }
-//        } catch (Exception e) {
-//            // Handle exceptions if the job launch fails
-//        }
-//    }
 
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
     @Bean
     public ItemReader<OrderDTO> orderItemReader() {
-        return new RestOrderItemReader(apiUrl, restTemplate());
+        return new RestOrderItemReader(apiUrl, new RestTemplate());
     }
 
     @Bean
@@ -73,17 +47,17 @@ public class BatchConfig {
 
     @Bean
     public Step orderStep(
-            ItemReader<OrderDTO> orderItemReader,
-            OrderItemProcessor orderItemProcessor,
-            SupplierOrderCsvItemWriter supplierOrderCsvItemWriter) {
+            ) {
         return new StepBuilder("orderStep", jobRepository)
-                .<OrderDTO, Map<Long, List<OrderDTO.OrderItemDTO>>>chunk(10)
-                .reader(orderItemReader)
-                .processor(orderItemProcessor)
-                .writer(supplierOrderCsvItemWriter)
-                .transactionManager(transactionManager)
+                .<OrderDTO, Map<Long, List<OrderDTO.OrderItemDTO>>>chunk(10,transactionManager)
+                .reader(orderItemReader())
+                .processor(orderItemProcessor())
+                .writer(supplierOrderCsvItemWriter())
                 .build();
     }
+
+
+
 
     @Bean
     public Job orderJob(Step orderStep) {

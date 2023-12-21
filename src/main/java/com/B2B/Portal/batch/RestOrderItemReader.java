@@ -3,6 +3,8 @@ package com.B2B.Portal.batch;
 import com.B2B.Portal.batch.dto.OrderDTO;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class RestOrderItemReader implements ItemReader<OrderDTO> {
     public OrderDTO read() throws Exception {
         if (orderDataIsNotInitialized()) {
             orderData = fetchOrderDataFromAPI();
+            System.out.println(orderData);
         }
 
         OrderDTO nextOrder = null;

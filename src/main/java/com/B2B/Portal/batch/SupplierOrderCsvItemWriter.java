@@ -1,60 +1,42 @@
 package com.B2B.Portal.batch;
 
-import com.B2B.Portal.batch.dto.OrderDTO.OrderItemDTO;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.transform.LineAggregator;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.WritableResource;
-
+import com.B2B.Portal.batch.dto.OrderDTO;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.ItemWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class SupplierOrderCsvItemWriter extends FlatFileItemWriter<Map<Long, List<OrderItemDTO>>> {
+public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, List<OrderDTO.OrderItemDTO>>> {
 
-    public SupplierOrderCsvItemWriter() {
-        // Naming the file with a date stamp
-        try {
-            String dateStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            String directoryPath = "/Users/dfanso/Programming/GitHub/B2B_Portal/";
-            String filePath = directoryPath + "supplier-orders-" + dateStamp + ".csv";
+    private static final Logger LOGGER = Logger.getLogger(SupplierOrderCsvItemWriter.class.getName());
+    private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/"; // Define your directory path here
 
-            Path directory = Paths.get(directoryPath);
-            if (!Files.exists(directory)) {
-                Files.createDirectories(directory);
+    private void writeSupplierOrdersToCsv(Long supplierId, List<OrderDTO.OrderItemDTO> items) {
+        String fileName = DIRECTORY_PATH + "supplier_" + supplierId + ".csv";
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            for (OrderDTO.OrderItemDTO item : items) {
+                writer.println(item.getProductId() + "," + item.getQuantity() + "," + item.getPrice());
             }
-
-            WritableResource resource = new FileSystemResource(filePath);
-            setResource(resource);
-
-            // ... (rest of your code for setting line aggregator)
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create file or directory", e);
+            LOGGER.log(Level.SEVERE, "Error writing to file: " + fileName, e);
+        }
+    }
+
+
+    @Override
+    public void write(Chunk<? extends Map<Long, List<OrderDTO.OrderItemDTO>>> chunk) throws Exception {
+        for (Map<Long, List<OrderDTO.OrderItemDTO>> itemMap : chunk) {
+            for (Map.Entry<Long, List<OrderDTO.OrderItemDTO>> entry : itemMap.entrySet()) {
+                writeSupplierOrdersToCsv(entry.getKey(), entry.getValue());
+            }
         }
 
-        // Defining how each line in the file will be aggregated from the domain object
-        setLineAggregator(new LineAggregator<Map<Long, List<OrderItemDTO>>>() {
-            @Override
-            public String aggregate(Map<Long, List<OrderItemDTO>> supplierOrders) {
-                StringBuilder lines = new StringBuilder();
-                for (Map.Entry<Long, List<OrderItemDTO>> entry : supplierOrders.entrySet()) {
-                    Long supplierId = entry.getKey();
-                    List<OrderItemDTO> orderItems = entry.getValue();
-                    for (OrderItemDTO item : orderItems) {
-                        lines.append(String.format("%d,%d,%f%n",
-                                //item.getOrderId(),  // Assuming OrderItemDTO has getOrderId()
-                                item.getProductId(),
-                                item.getQuantity(),
-                                item.getPrice()));
-                    }
-                }
-                return lines.toString();
-            }
-        });
     }
 }
