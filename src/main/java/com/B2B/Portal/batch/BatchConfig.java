@@ -8,6 +8,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
+@EnableScheduling
 public class BatchConfig {
 
     private final String apiUrl = "http://localhost:8082/api/v1/orders";

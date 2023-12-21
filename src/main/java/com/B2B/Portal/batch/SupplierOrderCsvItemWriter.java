@@ -6,6 +6,7 @@ import org.springframework.batch.item.ItemWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, List<Ord
     private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/"; // Define your directory path here
 
     private void writeSupplierOrdersToCsv(Long supplierId, List<OrderDTO.OrderItemDTO> items) {
-        String fileName = DIRECTORY_PATH + "supplier_" + supplierId + ".csv";
+        String fileName = DIRECTORY_PATH + "supplier_" + supplierId +"_" + LocalDate.now() +".csv";
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             for (OrderDTO.OrderItemDTO item : items) {
                 writer.println(item.getProductId() + "," + item.getQuantity() + "," + item.getPrice());
