@@ -1,4 +1,4 @@
-package com.B2B.Portal.product;
+package com.B2B.Portal.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 
 @SpringBootApplication(
         exclude = { SecurityAutoConfiguration.class })
-public class productApiApplication {
+public class orderApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(com.B2B.Portal.product.productApiApplication.class, args);
+        SpringApplication.run(orderApiApplication.class, args);
     }
 
 }
