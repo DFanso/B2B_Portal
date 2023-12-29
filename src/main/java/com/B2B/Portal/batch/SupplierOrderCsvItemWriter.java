@@ -1,17 +1,19 @@
 package com.B2B.Portal.batch;
 
-import com.B2B.Portal.batch.dto.OrderDTO;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.B2B.Portal.batch.dto.OrderDTO;
 
 public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, SupplierOrder>> {
 
@@ -19,20 +21,35 @@ public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, Supplier
     private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/"; // Define your directory path here
 
     private void writeSupplierOrdersToCsv(Long supplierId, OrderDTO orderDTO, List<OrderDTO.OrderItemDTO> orderItems) {
-        String fileName = DIRECTORY_PATH + "supplier_" + supplierId + "_" + LocalDate.now() + ".csv";
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-            // Write the header line
-            writer.println("Product_ID,Quantity,Price,Order_Date,Delivery_Date");
+        String fileName = DIRECTORY_PATH + "supplier_" + supplierId + "_" + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".csv";
+        boolean isNewFile = !new File(fileName).exists();
 
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            // Write the header line only if it's a new file
+            if (isNewFile) {
+                writer.println("OrderID,SUPPLIER_ID,SUPPLIER_NAME,PRODUCT_ID,PRODUCT_DESCRIPTION,QUANTITY,CUSTOMER_ID,CUSTOMER_NAME,DELIVERY_ADDRESS,DELIVERY_DATE");
+            }
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             for (OrderDTO.OrderItemDTO itemDTO : orderItems) {
+                String deliveryDate = (orderDTO.getDeliveryDate() != null) ? orderDTO.getDeliveryDate().format(dateFormatter) : "";
+
                 // Write details for each OrderItemDTO and some information from OrderDTO
-                writer.println(itemDTO.getProductId() + "," + itemDTO.getQuantity() + "," + itemDTO.getPrice() +
-                        "," + orderDTO.getOrderDate() + "," + orderDTO.getDeliveryDate());
+                writer.println(orderDTO.getOrderId() + "," + itemDTO.getSupplierId() + "," + escapeCsv(itemDTO.getSupplierName()) +
+                        "," + itemDTO.getProductId() + "," + escapeCsv(itemDTO.getProductDescription()) + "," + itemDTO.getQuantity() +
+                        "," + orderDTO.getCustomerId() + "," + escapeCsv(orderDTO.getCustomerName()) + "," + escapeCsv(orderDTO.getDeliveryAddress()) +
+                        "," + deliveryDate);
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error writing to file: " + fileName, e);
+            // Consider rethrowing the exception or handling it appropriately
         }
     }
+
+    private String escapeCsv(String value) {
+        return "\"" + value.replace("\"", "\"\"") + "\"";
+    }
+
 
 
     @Override

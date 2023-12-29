@@ -15,6 +15,9 @@ public class Order {
     @Column(nullable = false)
     private Long customerId;
 
+    @Column(nullable = false)
+    private String customerName;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
     private List<OrderItem> items;
 
@@ -85,6 +88,14 @@ public class Order {
         this.status = status;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
 
 
     public Order() {
@@ -116,6 +127,12 @@ public class Order {
 
         @Column(nullable = false)
         private Long supplierId;
+
+        @Column(nullable = false)
+        private String supplierName;
+
+        @Column(nullable = false)
+        private String productDescription;
 
 
         public Order getOrder() {
@@ -163,6 +180,22 @@ public class Order {
 
         public void setSupplierId(Long supplierId) {
             this.supplierId = supplierId;
+        }
+
+        public String getSupplierName() {
+            return supplierName;
+        }
+
+        public void setSupplierName(String supplierName) {
+            this.supplierName = supplierName;
+        }
+
+        public String getProductDescription() {
+            return productDescription;
+        }
+
+        public void setProductDescription(String productDescription) {
+            this.productDescription = productDescription;
         }
 
 

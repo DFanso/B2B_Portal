@@ -22,3 +22,12 @@ spring:
       on-profile: "order"
 server:
   port: 8082
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "batch"
+server:
+  port: 8083

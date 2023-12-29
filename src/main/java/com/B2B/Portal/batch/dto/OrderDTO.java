@@ -28,6 +28,10 @@ public class OrderDTO {
     @NotBlank(message = "Order status is mandatory")
     private String status;
 
+
+    @NotBlank(message = "Customer Name is mandatory")
+    private String customerName;
+
     public OrderDTO() {
     }
 
@@ -88,6 +92,14 @@ public class OrderDTO {
         this.status = status;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
 
 
 
@@ -100,6 +112,9 @@ public class OrderDTO {
         public Long getProductId() {
             return productId;
         }
+
+        @NotNull(message = "Product Description is mandatory")
+        private String productDescription;
         @NotNull(message = "Quantity is mandatory")
         @Min(value = 1, message = "Quantity must be at least 1")
         private Integer quantity;
@@ -110,6 +125,13 @@ public class OrderDTO {
 
         @NotNull(message = "Supplier ID is mandatory")
         private Long supplierId;
+
+
+
+        @NotNull(message = "Supplier Name is mandatory")
+        private String supplierName;
+
+
 
         public OrderItemDTO() {
         }
@@ -140,6 +162,23 @@ public class OrderDTO {
 
         public void setSupplierId(Long supplierId) {
             this.supplierId = supplierId;
+        }
+
+
+        public String getProductDescription() {
+            return productDescription;
+        }
+
+        public void setProductDescription(String productDescription) {
+            this.productDescription = productDescription;
+        }
+
+        public String getSupplierName() {
+            return supplierName;
+        }
+
+        public void setSupplierName(String supplierName) {
+            this.supplierName = supplierName;
         }
 
 
