@@ -5,26 +5,28 @@ import org.springframework.batch.item.ItemProcessor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class OrderItemProcessor implements ItemProcessor<OrderDTO, Map<Long, List<OrderDTO.OrderItemDTO>>> {
+public class OrderItemProcessor implements ItemProcessor<OrderDTO, Map<Long, SupplierOrder>> {
 
     @Override
-    public Map<Long, List<OrderDTO.OrderItemDTO>> process(OrderDTO order) {
+    public Map<Long, SupplierOrder> process(OrderDTO order) {
         LocalDate today = LocalDate.now();
 
         if (!order.getOrderDate().toLocalDate().equals(today)) {
             return null;
         }
 
-        Map<Long, List<OrderDTO.OrderItemDTO>> supplierOrdersMap = new HashMap<>();
+        Map<Long, SupplierOrder> supplierOrdersMap = new HashMap<>();
 
         for (OrderDTO.OrderItemDTO item : order.getItems()) {
             Long supplierId = item.getSupplierId();
-            supplierOrdersMap.computeIfAbsent(supplierId, k -> new ArrayList<>()).add(item);
+            supplierOrdersMap.computeIfAbsent(supplierId, k -> new SupplierOrder(order, new ArrayList<>()))
+                    .getItems().add(item);
         }
 
         return supplierOrdersMap;
     }
 }
+
+

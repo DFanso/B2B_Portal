@@ -48,15 +48,15 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step orderStep(
-            ) {
+    public Step orderStep() {
         return new StepBuilder("orderStep", jobRepository)
-                .<OrderDTO, Map<Long, List<OrderDTO.OrderItemDTO>>>chunk(10,transactionManager)
+                .<OrderDTO, Map<Long, SupplierOrder>>chunk(10, transactionManager)  // Update the generic types here
                 .reader(orderItemReader())
                 .processor(orderItemProcessor())
                 .writer(supplierOrderCsvItemWriter())
                 .build();
     }
+
 
 
 
