@@ -1,8 +1,8 @@
-package com.B2B.Portal.order.model;
+package com.B2B.Portal.batch.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

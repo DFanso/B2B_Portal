@@ -1,36 +1,40 @@
-package com.B2B.Portal.order.model;
+package com.B2B.Portal.batch.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "orders")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class OrderDTO {
+
     private Long orderId;
 
-    @Column(nullable = false)
+    @NotNull(message = "Customer ID is mandatory")
     private Long customerId;
 
-    @Column(nullable = false)
-    private String customerName;
+    @NotEmpty(message = "Order items cannot be empty")
+    @Valid
+    private List<OrderItemDTO> items;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
-    private List<OrderItem> items;
-
-    @Column(nullable = false)
+    @NotNull(message = "Order date is mandatory")
     private LocalDateTime orderDate;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Delivery address is mandatory")
     private String deliveryAddress;
 
-    private LocalDateTime deliveryDate;
+    private LocalDateTime deliveryDate; // Assuming this can be null
 
-    @Column(nullable = false)
+    @NotBlank(message = "Order status is mandatory")
     private String status;
+
+
+    @NotBlank(message = "Customer Name is mandatory")
+    private String customerName;
+
+    public OrderDTO() {
+    }
+
 
     public Long getOrderId() {
         return orderId;
@@ -48,11 +52,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public List<OrderItem> getItems() {
+    public List<OrderItemDTO> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(List<OrderItemDTO> items) {
         this.items = items;
     }
 
@@ -98,60 +102,38 @@ public class Order {
 
 
 
-    public Order() {
-    }
-
-    // Inner class for order items
-    @Entity
-    @Table(name = "order_items")
-    public static class OrderItem {
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "orderId", nullable = false)
-        private Order order;
 
 
+    public static class OrderItemDTO {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @Column(nullable = false)
+        @NotNull(message = "Product ID is mandatory")
         private Long productId;
-
-        @Column(nullable = false)
-        private Integer quantity;
-
-        @Column(nullable = false)
-        private Double price;
-
-        @Column(nullable = false)
-        private Long supplierId;
-
-        @Column(nullable = false)
-        private String supplierName;
-
-        @Column(nullable = false)
-        private String productDescription;
-
-
-        public Order getOrder() {
-            return order;
-        }
-
-        public void setOrder(Order order) {
-            this.order = order;
-        }
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
 
         public Long getProductId() {
             return productId;
+        }
+
+        @NotNull(message = "Product Description is mandatory")
+        private String productDescription;
+        @NotNull(message = "Quantity is mandatory")
+        @Min(value = 1, message = "Quantity must be at least 1")
+        private Integer quantity;
+
+        @NotNull(message = "Price is mandatory")
+        @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
+        private Double price;
+
+        @NotNull(message = "Supplier ID is mandatory")
+        private Long supplierId;
+
+
+
+        @NotNull(message = "Supplier Name is mandatory")
+        private String supplierName;
+
+
+
+        public OrderItemDTO() {
         }
 
         public void setProductId(Long productId) {
@@ -182,13 +164,6 @@ public class Order {
             this.supplierId = supplierId;
         }
 
-        public String getSupplierName() {
-            return supplierName;
-        }
-
-        public void setSupplierName(String supplierName) {
-            this.supplierName = supplierName;
-        }
 
         public String getProductDescription() {
             return productDescription;
@@ -196,6 +171,14 @@ public class Order {
 
         public void setProductDescription(String productDescription) {
             this.productDescription = productDescription;
+        }
+
+        public String getSupplierName() {
+            return supplierName;
+        }
+
+        public void setSupplierName(String supplierName) {
+            this.supplierName = supplierName;
         }
 
 
