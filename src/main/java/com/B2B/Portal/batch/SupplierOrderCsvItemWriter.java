@@ -18,7 +18,7 @@ import com.B2B.Portal.batch.dto.OrderDTO;
 public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, SupplierOrder>> {
 
     private static final Logger LOGGER = Logger.getLogger(SupplierOrderCsvItemWriter.class.getName());
-    private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/"; // Define your directory path here
+    private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/";
 
     private void writeSupplierOrdersToCsv(Long supplierId, OrderDTO orderDTO, List<OrderDTO.OrderItemDTO> orderItems) {
         String fileName = DIRECTORY_PATH + "supplier_" + supplierId + "_" + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".csv";
@@ -42,13 +42,13 @@ public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, Supplier
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error writing to file: " + fileName, e);
-            // Consider rethrowing the exception or handling it appropriately
         }
     }
 
     private String escapeCsv(String value) {
         return "\"" + value.replace("\"", "\"\"") + "\"";
     }
+
 
 
 
