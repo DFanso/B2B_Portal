@@ -50,7 +50,7 @@ public class UserService {
         }
     }
 
-    public UserResponseDTO getUserById(Long id) {
+    public UserResponseDTO getUserById(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         return modelMapper.map(user, UserResponseDTO.class);
@@ -73,7 +73,7 @@ public class UserService {
 
 
 
-    public User updateUser(Long id, @Valid UserDTO userDetailsDTO) {
+    public User updateUser(String id, @Valid UserDTO userDetailsDTO) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         userDetailsDTO.setUserId(id);
@@ -84,14 +84,14 @@ public class UserService {
     }
 
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
     }
 
-    public boolean isValidSupplier(Long userId) {
+    public boolean isValidSupplier(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return "SUPPLIER".equals(user.getType());

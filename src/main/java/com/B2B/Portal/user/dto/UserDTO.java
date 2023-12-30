@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public class UserDTO {
 
-    private Long userId;
+    private String userId;
 
     @NotBlank(message = "Name is mandatory")
     private String name;
@@ -29,7 +29,7 @@ public class UserDTO {
     }
 
     // Getters
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -50,7 +50,7 @@ public class UserDTO {
     }
 
     // Setters
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

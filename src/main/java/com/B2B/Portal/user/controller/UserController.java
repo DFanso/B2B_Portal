@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping(value="/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
         UserResponseDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
@@ -54,22 +54,22 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @Valid @RequestBody UserDTO userDTO) {
         User updatedUser = userService.updateUser(id, userDTO);
         UserDTO updatedUserDTO = modelMapper.map(updatedUser, UserDTO.class);
         return ResponseEntity.ok(updatedUserDTO);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/validate-supplier")
     public ResponseEntity<?> isValidSupplier(@RequestParam String userId) {
-        Long ID = Long.parseLong(userId);
-        boolean isValid = userService.isValidSupplier(ID);
+        //Long ID = Long.parseLong(userId);
+        boolean isValid = userService.isValidSupplier(userId);
         return ResponseEntity.ok(isValid);
     }
 }
