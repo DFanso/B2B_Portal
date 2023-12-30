@@ -45,7 +45,7 @@ public class OrderService {
     }
 
     private boolean validateUserId(Long userId, String userType) {
-        String validationUrl = "http://localhost:8080/api/v1/users/" + userId;
+        String validationUrl = "http://128.199.128.10:8081/api/v1/users/" + userId;
         try {
             ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                     validationUrl,
@@ -67,7 +67,7 @@ public class OrderService {
     }
 
     private boolean validateProduct(Long productId, Long supplierId) {
-        String validationUrl = "http://localhost:8081/api/v1/products/" + productId;
+        String validationUrl = "http://128.199.128.10:8082/api/v1/products/" + productId;
         try {
             ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                     validationUrl,

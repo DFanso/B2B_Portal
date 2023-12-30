@@ -20,8 +20,15 @@ public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, Supplier
     private static final Logger LOGGER = Logger.getLogger(SupplierOrderCsvItemWriter.class.getName());
     private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/";
 
+    private String getDirectoryPath() {
+        // This will get the project's base directory
+        return System.getProperty("user.dir") + File.separator;
+    }
+
+
     private void writeSupplierOrdersToCsv(Long supplierId, OrderDTO orderDTO, List<OrderDTO.OrderItemDTO> orderItems) {
-        String fileName = DIRECTORY_PATH + "supplier_" + supplierId + "_" + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".csv";
+        //String fileName = DIRECTORY_PATH + "supplier_" + supplierId + "_" + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".csv";
+        String fileName = getDirectoryPath() + "supplier_" + supplierId + "_" + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".csv";
         boolean isNewFile = !new File(fileName).exists();
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {

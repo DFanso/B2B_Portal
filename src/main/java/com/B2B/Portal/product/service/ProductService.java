@@ -22,7 +22,7 @@ public class ProductService {
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
 
-    private final String userServiceUrl = "http://localhost:8080/api/v1/users/validate-supplier";
+    private final String userServiceUrl = "http://128.199.128.10/:8081/api/v1/users/validate-supplier";
 
     @Autowired
     public ProductService(RestTemplateBuilder restTemplateBuilder, ProductRepository productRepository, ModelMapper modelMapper) {

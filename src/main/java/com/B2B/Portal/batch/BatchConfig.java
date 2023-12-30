@@ -18,7 +18,7 @@ import java.util.Map;
 @EnableScheduling
 public class BatchConfig {
 
-    private final String apiUrl = "http://localhost:8082/api/v1/orders";
+    private final String apiUrl = "http://128.199.128.10:8083/api/v1/orders";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
