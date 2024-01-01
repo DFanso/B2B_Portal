@@ -24,7 +24,7 @@ public class Product {
     private String status;
 
     @Column(nullable = false)
-    private Long supplierId;
+    private String supplierId;
 
 
     // Assuming images are stored as a comma-separated string of URLs
@@ -76,11 +76,11 @@ public class Product {
         this.status = status;
     }
 
-    public Long getSupplierId() {
+    public String getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(Long supplierId) {
+    public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
     }
 

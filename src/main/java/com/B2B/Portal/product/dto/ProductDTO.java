@@ -19,7 +19,7 @@ public class ProductDTO {
     private String status;
 
     @NotNull(message = "Supplier ID is mandatory")
-    private Long supplierId;
+    private String supplierId;
 
     @NotNull(message = "Product images are mandatory")
     @Size(min = 1, message = "At least one image URL must be provided")
@@ -71,11 +71,11 @@ public class ProductDTO {
         this.status = status;
     }
 
-    public Long getSupplierId() {
+    public String getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(Long supplierId) {
+    public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // This method retrieves all products associated with a given supplier ID
-    List<Product> findBySupplierId(Long supplierId);
+    List<Product> findBySupplierId(String supplierId);
 
     // Add any other custom methods you may need
 }
