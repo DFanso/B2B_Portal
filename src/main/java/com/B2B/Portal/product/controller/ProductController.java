@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     // Get products by supplier ID
-    @GetMapping(value = "/products/supplier/{supplierId}")
+    @GetMapping(value = "/supplier/{supplierId}")
     public ResponseEntity<List<ProductDTO>> getProductsBySupplierId(@PathVariable String supplierId) {
         List<ProductDTO> products = productService.getProductsBySupplierId(supplierId);
         return ResponseEntity.ok(products);
