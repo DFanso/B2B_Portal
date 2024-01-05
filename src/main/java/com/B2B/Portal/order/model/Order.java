@@ -13,7 +13,7 @@ public class Order {
     private Long orderId;
 
     @Column(nullable = false)
-    private Long customerId;
+    private String customerId;
 
     @Column(nullable = false)
     private String customerName;
@@ -40,11 +40,11 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -126,7 +126,7 @@ public class Order {
         private Double price;
 
         @Column(nullable = false)
-        private Long supplierId;
+        private String supplierId;
 
         @Column(nullable = false)
         private String supplierName;
@@ -174,11 +174,11 @@ public class Order {
             this.price = price;
         }
 
-        public Long getSupplierId() {
+        public String getSupplierId() {
             return supplierId;
         }
 
-        public void setSupplierId(Long supplierId) {
+        public void setSupplierId(String supplierId) {
             this.supplierId = supplierId;
         }
 

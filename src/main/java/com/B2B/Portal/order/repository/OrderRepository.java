@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    List<Order> findByCustomerId(Long customerId);
+    List<Order> findByCustomerId(String customerId);
 
     @Query("SELECT o FROM Order o JOIN o.items i WHERE i.supplierId = :supplierId")
     List<Order> findBySupplierId(@Param("supplierId") Long supplierId);

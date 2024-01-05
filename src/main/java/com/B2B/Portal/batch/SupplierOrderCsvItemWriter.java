@@ -18,7 +18,7 @@ import com.B2B.Portal.batch.dto.OrderDTO;
 public class SupplierOrderCsvItemWriter implements ItemWriter<Map<Long, SupplierOrder>> {
 
     private static final Logger LOGGER = Logger.getLogger(SupplierOrderCsvItemWriter.class.getName());
-    private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/";
+    //private static final String DIRECTORY_PATH = "/Users/dfanso/Programming/GitHub/B2B_Portal/";
 
     private String getDirectoryPath() {
         // This will get the project's base directory

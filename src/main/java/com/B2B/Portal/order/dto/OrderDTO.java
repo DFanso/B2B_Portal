@@ -10,7 +10,7 @@ public class OrderDTO {
     private Long orderId;
 
     @NotNull(message = "Customer ID is mandatory")
-    private Long customerId;
+    private String customerId;
 
     @NotEmpty(message = "Order items cannot be empty")
     @Valid
@@ -43,11 +43,11 @@ public class OrderDTO {
         this.orderId = orderId;
     }
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -123,7 +123,7 @@ public class OrderDTO {
         private Double price;
 
         @NotNull(message = "Supplier ID is mandatory")
-        private Long supplierId;
+        private String supplierId;
 
 
 
@@ -155,11 +155,11 @@ public class OrderDTO {
             this.price = price;
         }
 
-        public Long getSupplierId() {
+        public String getSupplierId() {
             return supplierId;
         }
 
-        public void setSupplierId(Long supplierId) {
+        public void setSupplierId(String supplierId) {
             this.supplierId = supplierId;
         }
 
