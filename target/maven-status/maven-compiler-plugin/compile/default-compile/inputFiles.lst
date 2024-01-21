@@ -3,6 +3,7 @@
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/product/model/Product.java
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/order/configuration/ModelMapperConfig.java
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/user/dto/UserDTO.java
+/Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/product/dto/StatusUpdateDTO.java
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/product/productApiApplication.java
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/order/exception/InvalidProductException.java
 /Users/dfanso/Programming/GitHub/B2B_Portal/src/main/java/com/B2B/Portal/user/model/User.java

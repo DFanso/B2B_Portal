@@ -81,7 +81,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.B2B.Portal.batch.BatchJobApplication</mainClass>
+					<mainClass>com.B2B.Portal.product.productApiApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

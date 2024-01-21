@@ -7,9 +7,9 @@ com/B2B/Portal/product/controller/ProductController.class
 com/B2B/Portal/product/service/ProductService.class
 com/B2B/Portal/batch/dto/OrderDTO$OrderItemDTO.class
 com/B2B/Portal/order/dto/ProductDTO.class
+com/B2B/Portal/product/dto/StatusUpdateDTO.class
 com/B2B/Portal/order/repository/OrderRepository.class
 com/B2B/Portal/user/exception/BadCredentialsException.class
-com/B2B/Portal/order/service/OrderService$1.class
 com/B2B/Portal/order/configuration/ModelMapperConfig.class
 com/B2B/Portal/product/dto/ProductDTO.class
 com/B2B/Portal/product/repository/ProductRepository.class
@@ -24,7 +24,6 @@ com/B2B/Portal/user/exception/UserAlreadyExistsException.class
 com/B2B/Portal/product/configuration/ModelMapperConfig.class
 com/B2B/Portal/order/dto/OrderDTO.class
 com/B2B/Portal/user/configuration/ModelMapperConfig.class
-com/B2B/Portal/order/service/OrderService$2.class
 com/B2B/Portal/batch/RestOrderItemReader.class
 com/B2B/Portal/user/repository/UserRepository.class
 com/B2B/Portal/user/exception/CustomExceptionHandler.class
