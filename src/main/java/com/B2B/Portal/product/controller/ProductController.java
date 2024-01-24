@@ -1,9 +1,11 @@
 package com.B2B.Portal.product.controller;
 
 import com.B2B.Portal.product.dto.ProductDTO;
+import com.B2B.Portal.product.dto.StatusUpdateDTO;
 import com.B2B.Portal.product.exception.InvalidSupplierException;
 import com.B2B.Portal.product.model.Product;
 import com.B2B.Portal.product.service.ProductService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,8 @@ public class ProductController {
     }
 
     // Get products by supplier ID
-    @GetMapping(value = "/products/supplier/{supplierId}")
-    public ResponseEntity<List<ProductDTO>> getProductsBySupplierId(@PathVariable Long supplierId) {
+    @GetMapping(value = "/supplier/{supplierId}")
+    public ResponseEntity<List<ProductDTO>> getProductsBySupplierId(@PathVariable String supplierId) {
         List<ProductDTO> products = productService.getProductsBySupplierId(supplierId);
         return ResponseEntity.ok(products);
     }
@@ -68,7 +70,12 @@ public class ProductController {
 
     @PatchMapping("/{productId}")
     public ResponseEntity<ProductDTO> updateProductStatus(@PathVariable Long productId, @RequestBody String status) {
-        ProductDTO updatedProduct = productService.updateProductStatus(productId, status);
+        // Remove leading and trailing quotes from the status string
+        String cleanedStatus = StringUtils.strip(status, "\"");
+
+        System.out.println(cleanedStatus); // Logging the cleaned status
+
+        ProductDTO updatedProduct = productService.updateProductStatus(productId, cleanedStatus);
         return ResponseEntity.ok(updatedProduct);
     }
 

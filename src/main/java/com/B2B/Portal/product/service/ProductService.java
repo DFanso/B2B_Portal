@@ -22,7 +22,6 @@ public class ProductService {
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
 
-    private final String userServiceUrl = "http://localhost:8080/api/v1/users/validate-supplier";
 
     @Autowired
     public ProductService(RestTemplateBuilder restTemplateBuilder, ProductRepository productRepository, ModelMapper modelMapper) {
@@ -32,23 +31,11 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        if (!isUserValidSupplier(productDTO.getSupplierId())) {
-            throw new InvalidSupplierException("No valid supplier found with the provided user ID.");
-        }
         Product product = modelMapper.map(productDTO, Product.class);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
-    private boolean isUserValidSupplier(Long userId) {
-        try {
-            String url = userServiceUrl + "?userId=" + userId;
-            Boolean isValid = restTemplate.getForObject(url, Boolean.class);
-            return Boolean.TRUE.equals(isValid);
-        } catch (HttpClientErrorException.NotFound e) {
-            return false;
-        }
-    }
 
     public List<ProductDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
@@ -78,7 +65,7 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public List<ProductDTO> getProductsBySupplierId(Long supplierId) {
+    public List<ProductDTO> getProductsBySupplierId(String supplierId) {
         List<Product> products = productRepository.findBySupplierId(supplierId);
         return products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
@@ -86,6 +73,7 @@ public class ProductService {
     }
 
     public ProductDTO updateProductStatus(Long productId, String newStatus) {
+        System.out.println(newStatus);
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + productId));
 

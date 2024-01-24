@@ -11,8 +11,7 @@ import jakarta.validation.constraints.Size;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private String userId;
 
     private String name;
 
@@ -22,11 +21,11 @@ public class User {
 
     private String type;
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
